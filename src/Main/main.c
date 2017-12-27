@@ -14,9 +14,34 @@
 #include <Drivers/delay/delay.h>
 #include <Drivers/uart/uart.h>
 
-volatile uint16_t ADC_Result[8]={1,2,3,4,5,6,7,8};
+#define ADC_BUFFER_SIZE 1024
+
+volatile uint16_t ADC_Result[ADC_BUFFER_SIZE * 2];
 
 uint16_t ADC1ConvertedValue;
+
+// Настройка таймера для триггерения АЦП
+// Получить ровно 4кГц частоту сэмплирования без таймера не 
+// получится
+void TimerInit()
+{
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
+    
+    // Частота - 4кГц
+    TIM_TimeBaseInitTypeDef timInit;    
+    TIM_TimeBaseStructInit(&timInit);
+    timInit.TIM_Prescaler = 18;
+    timInit.TIM_Period = 1000;
+    TIM_TimeBaseInit(TIM6, &timInit);
+    
+    //TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
+    //NVIC_EnableIRQ(TIM6_DAC1_IRQn);
+    
+    // Выходной триггер
+    TIM_SelectOutputTrigger(TIM6, TIM_TRGOSource_Update);
+    
+    TIM_Cmd(TIM6, ENABLE);
+}
 
 void Adc1Init()
 {
@@ -25,6 +50,7 @@ void Adc1Init()
     DMA_InitTypeDef dmaInit;
     ADC_CommonInitTypeDef adcCommonInit;
     
+
    // Включаем тактирование DMA1, ADC12 и GPIOA
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC12, ENABLE);
@@ -38,11 +64,11 @@ void Adc1Init()
     dmaInit.DMA_MemoryBaseAddr = (uint32_t)&ADC_Result;                     // Адрес получателя - буфер
     dmaInit.DMA_DIR = DMA_DIR_PeripheralSRC;                                // Из переферии в память
     dmaInit.DMA_M2M = DMA_M2M_Disable;                                      
-    dmaInit.DMA_BufferSize = 4;                                             // Размер буффера в памяти
+    dmaInit.DMA_BufferSize = ADC_BUFFER_SIZE;                               // Размер буффера в памяти
     dmaInit.DMA_PeripheralInc = DMA_PeripheralInc_Disable;                  // Не инкрементировать адрес источника
     dmaInit.DMA_MemoryInc = DMA_MemoryInc_Enable;                           // Не инкрементировать адрес получателя
-    dmaInit.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;       // Размер данных - 2б
-    dmaInit.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;               // Размер данных - 2б
+    dmaInit.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;           // Размер данных - 4б
+    dmaInit.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;                   // Размер данных - 4б
     dmaInit.DMA_Mode = DMA_Mode_Circular;                                   // 
     dmaInit.DMA_Priority = DMA_Priority_High;
     
@@ -51,7 +77,7 @@ void Adc1Init()
     DMA_Cmd(DMA1_Channel1, ENABLE);     
  
     // Настраиваем тактирование АЦП
-    RCC_ADCCLKConfig(RCC_ADC12PLLCLK_Div2); 
+    RCC_ADCCLKConfig(RCC_ADC12PLLCLK_Div1); 
  
     // Калибровка АЦП
     ADC_VoltageRegulatorCmd(ADC1, ENABLE);
@@ -65,20 +91,20 @@ void Adc1Init()
     while(ADC_GetCalibrationStatus(ADC2) != RESET );
  
     // Настройка взаимодействия АЦП1 и АЦП2
-    adcCommonInit.ADC_Mode = ADC_Mode_RegSimul;
+    adcCommonInit.ADC_Mode = ADC_Mode_RegSimul;                             // Одновременный режим АЦП1 и АЦП2
     adcCommonInit.ADC_Clock = ADC_Clock_AsynClkMode;                    
-    adcCommonInit.ADC_DMAAccessMode = ADC_DMAAccessMode_1;             
-    adcCommonInit.ADC_DMAMode = ADC_DMAMode_Circular;                  
+    adcCommonInit.ADC_DMAAccessMode = ADC_DMAAccessMode_1;                  // MDMA для того, чтобы одновременно писать с обоих АЦП
+    adcCommonInit.ADC_DMAMode = ADC_DMAMode_Circular;                       // Кольцевой ДМА
     adcCommonInit.ADC_TwoSamplingDelay = 0;          
     ADC_CommonInit(ADC1, &adcCommonInit);
   
  
     // Настройка АЦП
     ADC_StructInit(&adcInit);
-    adcInit.ADC_ContinuousConvMode = ADC_ContinuousConvMode_Enable;
+    adcInit.ADC_ContinuousConvMode = ADC_ContinuousConvMode_Disable;
     adcInit.ADC_Resolution = ADC_Resolution_12b; 
-    adcInit.ADC_ExternalTrigConvEvent = ADC_ExternalTrigConvEvent_0;         
-    adcInit.ADC_ExternalTrigEventEdge = ADC_ExternalTrigEventEdge_None;
+    adcInit.ADC_ExternalTrigConvEvent = ADC_ExternalTrigConvEvent_13;           // Преобразование по TIM6 TRGO 
+    adcInit.ADC_ExternalTrigEventEdge = ADC_ExternalTrigEventEdge_RisingEdge;  
     adcInit.ADC_DataAlign = ADC_DataAlign_Right;
     adcInit.ADC_OverrunMode = ADC_OverrunMode_Disable;   
     adcInit.ADC_AutoInjMode = ADC_AutoInjec_Disable;  
@@ -106,19 +132,31 @@ int main(void)
 {   
     DelayInit();
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);	
-    GpioInitOutput(GPIOE, GPIO_Pin_9, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3);
+    
+    GpioInitOutput(GPIOE, GPIO_Pin_9 | GPIO_Pin_8, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3);
     
     /*
     PC0 - ADC1 CH6 (alt) DMA CH1
     PC0 - ADC2 CH7 (alt) DMA CH2
     */
     Adc1Init();
+    TimerInit();
+    
+    RCC_ClocksTypeDef clock;
+    RCC_GetClocksFreq(&clock);
       
     int wtf;
+    
     while(1)
     {               
-        wtf = ADC_Result[0];
-        GPIOE->ODR ^= GPIO_Pin_9;
-        //Delay_us(100000);
-     }
+    }
 }
+
+/*void TIM6_DAC1_IRQHandler()
+{
+    if(TIM_GetITStatus(TIM6, TIM_IT_Update)!=RESET)
+	{
+        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+        GPIOE->ODR ^= GPIO_Pin_9;
+    }
+}*/
