@@ -6,6 +6,7 @@
 #ifndef __UART_H__
 #define __UART_H__
 
+#include <stm32f30x_misc.h>
 #include <config.h>
 #include <stm32f30x_usart.h>
 #include <Drivers/gpio/gpio.h>

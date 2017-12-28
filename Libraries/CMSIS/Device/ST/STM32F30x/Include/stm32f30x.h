@@ -66,8 +66,10 @@
   */
   
 /* Old STM32F30X definition, maintained for legacy purpose */
-#if defined(STM32F30X) 
-  #define STM32F303xC
+#if defined(STM32F30X)
+    #ifndef STM32F303xC
+        #define STM32F303xC
+    #endif
 #endif /* STM32F30X */
 
 #if !defined (STM32F303xC) && !defined (STM32F334x8) && !defined (STM32F302x8) && !defined (STM32F303xE)

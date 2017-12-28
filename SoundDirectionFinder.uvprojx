@@ -335,7 +335,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F334x8</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src;.\src\Main;.\Device;.\Libraries\CMSIS\Include;.\Libraries\CMSIS\Device\ST\STM32F30x\Include;.\Libraries\STM32F30x_StdPeriph_Driver\inc;.\Libraries\STM32F30x_I2C_CPAL_Driver\inc</IncludePath>
+              <IncludePath>.\src;.\src\Main;.\Device;.\Libraries\CMSIS\Include;.\Libraries\CMSIS\Device\ST\STM32F30x\Include;.\Libraries\STM32F30x_StdPeriph_Driver\inc;.\Libraries\STM32F30x_I2C_CPAL_Driver\inc;.\Libraries\STM32_USB-FS-Device_Driver\inc;.\src\Usb</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -534,6 +534,46 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_adc.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f30x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f30x_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_can.c</FilePath>
@@ -559,16 +599,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dbgmcu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_flash.c</FilePath>
@@ -577,11 +607,6 @@
               <FileName>stm32f30x_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_fmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_hrtim.c</FileName>
@@ -599,11 +624,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_iwdg.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_opamp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_opamp.c</FilePath>
@@ -614,11 +634,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_pwr.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rtc.c</FilePath>
@@ -627,21 +642,6 @@
               <FileName>stm32f30x_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_wwdg.c</FileName>
@@ -687,6 +687,91 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_sil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_sil.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_USR</GroupName>
+          <Files>
+            <File>
+              <FileName>hw_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\hw_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_endp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_endp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_istr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_istr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_prop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_prop.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Usb\usb_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32303c_eval.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32303c_eval.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1220,6 +1305,46 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_adc.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f30x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f30x_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_can.c</FilePath>
@@ -1245,16 +1370,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dbgmcu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_flash.c</FilePath>
@@ -1263,11 +1378,6 @@
               <FileName>stm32f30x_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_fmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_hrtim.c</FileName>
@@ -1285,11 +1395,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_iwdg.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_opamp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_opamp.c</FilePath>
@@ -1300,11 +1405,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_pwr.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rtc.c</FilePath>
@@ -1313,21 +1413,6 @@
               <FileName>stm32f30x_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_wwdg.c</FileName>
@@ -1373,6 +1458,91 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_sil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_sil.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_USR</GroupName>
+          <Files>
+            <File>
+              <FileName>hw_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\hw_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_endp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_endp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_istr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_istr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_prop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_prop.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Usb\usb_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32303c_eval.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32303c_eval.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1704,10 +1874,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--C99</MiscControls>
+              <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F303xC,USE_STM32303C_EVAL</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src;.\src\Main;.\Device;.\Libraries\CMSIS\Include;.\Libraries\CMSIS\Device\ST\STM32F30x\Include;.\Libraries\STM32F30x_StdPeriph_Driver\inc;.\Libraries\STM32F30x_I2C_CPAL_Driver\inc</IncludePath>
+              <IncludePath>.\src;.\src\Main;.\Device;.\Libraries\CMSIS\Include;.\Libraries\CMSIS\Device\ST\STM32F30x\Include;.\Libraries\STM32F30x_StdPeriph_Driver\inc;.\Libraries\STM32F30x_I2C_CPAL_Driver\inc;.\Libraries\STM32_USB-FS-Device_Driver\inc;.\src\Usb</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1906,6 +2076,46 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_adc.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f30x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f30x_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_can.c</FilePath>
@@ -1931,16 +2141,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dbgmcu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_flash.c</FilePath>
@@ -1949,11 +2149,6 @@
               <FileName>stm32f30x_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_fmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_hrtim.c</FileName>
@@ -1971,11 +2166,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_iwdg.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_opamp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_opamp.c</FilePath>
@@ -1986,11 +2176,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_pwr.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rtc.c</FilePath>
@@ -1999,21 +2184,6 @@
               <FileName>stm32f30x_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_wwdg.c</FileName>
@@ -2059,6 +2229,91 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_sil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_sil.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_USR</GroupName>
+          <Files>
+            <File>
+              <FileName>hw_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\hw_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_endp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_endp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_istr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_istr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_prop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_prop.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Usb\usb_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32303c_eval.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32303c_eval.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2592,6 +2847,46 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_adc.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f30x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f30x_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f30x_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_can.c</FilePath>
@@ -2617,16 +2912,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dbgmcu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_exti.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_flash.c</FilePath>
@@ -2635,11 +2920,6 @@
               <FileName>stm32f30x_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_fmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_hrtim.c</FileName>
@@ -2657,11 +2937,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_iwdg.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_misc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_opamp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_opamp.c</FilePath>
@@ -2672,11 +2947,6 @@
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_pwr.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f30x_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rcc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f30x_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_rtc.c</FilePath>
@@ -2685,21 +2955,6 @@
               <FileName>stm32f30x_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_syscfg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f30x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F30x_StdPeriph_Driver\src\stm32f30x_usart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f30x_wwdg.c</FileName>
@@ -2745,6 +3000,91 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_sil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32_USB-FS-Device_Driver\src\usb_sil.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB_USR</GroupName>
+          <Files>
+            <File>
+              <FileName>hw_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\hw_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_endp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_endp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_istr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_istr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_prop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_prop.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\usb_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Usb\usb_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32303c_eval.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Usb\stm32303c_eval.c</FilePath>
             </File>
           </Files>
         </Group>

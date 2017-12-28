@@ -1,4 +1,4 @@
-#include "stm32f30x.h"
+#include <stm32f30x.h>
 #include <stm32f30x_rcc.h>
 #include <stm32f30x_gpio.h>
 #include <stm32f30x_adc.h>
@@ -13,6 +13,13 @@
 #include <Drivers/gpio/discovery_leds.h>
 #include <Drivers/delay/delay.h>
 #include <Drivers/uart/uart.h>
+
+#include "hw_config.h"
+#include "usb_lib.h"
+#include "usb_desc.h"
+#include "usb_pwr.h"
+
+#include <stdio.h>
 
 #define ADC_BUFFER_SIZE 1024
 
@@ -35,7 +42,7 @@ void TimerInit()
     TIM_TimeBaseInit(TIM6, &timInit);
     
     //TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
-    //NVIC_EnableIRQ(TIM6_DAC1_IRQn);
+    NVIC_EnableIRQ(TIM6_DAC1_IRQn);
     
     // Выходной триггер
     TIM_SelectOutputTrigger(TIM6, TIM_TRGOSource_Update);
@@ -45,7 +52,6 @@ void TimerInit()
 
 void Adc1Init()
 {
-    NVIC_InitTypeDef NVIC_InitStructure; 
     ADC_InitTypeDef adcInit;
     DMA_InitTypeDef dmaInit;
     ADC_CommonInitTypeDef adcCommonInit;
@@ -129,26 +135,27 @@ void Adc1Init()
 }
 
 int main(void)
-{   
+{       
     DelayInit();
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);	
     
-    GpioInitOutput(GPIOE, GPIO_Pin_9 | GPIO_Pin_8, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3);
+    Set_System();
+    Set_USBClock();
+    USB_Interrupts_Config();
+    USB_Init();
     
-    /*
-    PC0 - ADC1 CH6 (alt) DMA CH1
-    PC0 - ADC2 CH7 (alt) DMA CH2
-    */
     Adc1Init();
     TimerInit();
     
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);	    
+    GpioInitOutput(GPIOE, GPIO_Pin_9 | GPIO_Pin_8, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3);   
+    
     RCC_ClocksTypeDef clock;
     RCC_GetClocksFreq(&clock);
-      
-    int wtf;
-    
+
     while(1)
-    {               
+    {
+        printf("%d %d\n", ADC_Result[0], ADC_Result[1]);
+        for(int i = 0; i<100000; i++);
     }
 }
 
