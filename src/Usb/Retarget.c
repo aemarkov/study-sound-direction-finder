@@ -27,6 +27,7 @@ FILE __stdin;
 int sendchar(char ch)
 {
     USB_Send_Byte((uint8_t)ch);
+    return ch;
 }
 
 int fputc(int ch, FILE *f) {
