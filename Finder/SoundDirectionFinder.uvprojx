@@ -688,6 +688,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
             </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Drivers\adc\adc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1458,6 +1463,11 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Drivers\adc\adc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2230,6 +2240,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
             </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Drivers\adc\adc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3000,6 +3015,11 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Drivers\adc\adc.c</FilePath>
             </File>
           </Files>
         </Group>
