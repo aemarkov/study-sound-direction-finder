@@ -115,7 +115,7 @@ void TimerInit()
     TIM_TimeBaseInitTypeDef timInit;    
     TIM_TimeBaseStructInit(&timInit);
     timInit.TIM_Prescaler = 18;
-    timInit.TIM_Period = 1000;
+    timInit.TIM_Period = 100;
     TIM_TimeBaseInit(TIM6, &timInit);
     
     //TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);

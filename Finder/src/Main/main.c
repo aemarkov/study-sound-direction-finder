@@ -26,7 +26,8 @@ void HandleAdc(uint16_t* buffer, int length)
 {
     GPIOE->ODR^=GPIO_Pin_8;
     USB_Send_Data(header, HEADER_SIZE);
-    USB_Send_Data((uint8_t*)buffer, 2*sizeof(uint16_t));
+    
+    USB_Send_Data((uint8_t*)buffer, length*sizeof(uint16_t));
 }
 
 int main(void)

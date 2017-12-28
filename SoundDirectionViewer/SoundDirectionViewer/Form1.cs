@@ -9,22 +9,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SoundDirectionViiewer.Properties;
+using ZedGraph;
 
 namespace SoundDirectionViiewer
 {
     public partial class Form1 : Form
     {
+        const int DATA_LENGTH = 256;
         private SerialPort _com;
         private PackageBuilder _builder;
 
+        private int graphCapacity = 1024;
+        private int currentGraphX;
+        private RollingPointPairList adc1List, adc2List;
+        private const double MIN_VALUE = 0;
+        private const double MAX_VALUE = 1.2;
 
         public Form1()
         {
             InitializeComponent();
 
-            _com = new SerialPort();
-            _builder = new PackageBuilder(new byte[]{0x32, 0xFA, 0x12}, 4);
+            adc1List = new RollingPointPairList(graphCapacity);
+            adc2List = new RollingPointPairList(graphCapacity);
+            zedGraphControl1.GraphPane.AddCurve("ADC1", adc1List, Color.Red, SymbolType.None);
+            zedGraphControl1.GraphPane.AddCurve("ADC2", adc2List, Color.Green, SymbolType.None);
 
+            zedGraphControl1.GraphPane.YAxis.Scale.Min = MIN_VALUE;
+            zedGraphControl1.GraphPane.YAxis.Scale.Max = MAX_VALUE;
+            zedGraphControl1.AxisChange();
+            zedGraphControl1.Invalidate();
+
+            _com = new SerialPort();
+            _builder = new PackageBuilder(new byte[]{0x32, 0xFA, 0x12}, DATA_LENGTH * 2 * sizeof(UInt16));            
             _com.DataReceived += _com_DataReceived;
             _builder.PackageReceived += _builder_PackageReceived;
 
@@ -78,12 +94,42 @@ namespace SoundDirectionViiewer
 
         private void packageReceived(byte[] package)
         {
-            label1.Text = BitConverter.ToInt16(package, 0).ToString();
-            label2.Text = BitConverter.ToInt16(package, 2).ToString();
-        }
-        
+            double[]  adcVal1 = new double[DATA_LENGTH];
+            double[] adcVal2 = new double[DATA_LENGTH];
+            double correlation = 0;
+            
+            adc1List.Clear();
+            adc2List.Clear();
+            
+            for (int i = 0; i < DATA_LENGTH-1; i++)
+            {
+                adcVal1[i] = BitConverter.ToUInt16(package, i*4) / 4096.0 * 1;
+                adcVal2[i] = BitConverter.ToUInt16(package, i * 4 + 2) / 4096.0 * 1;
+                adc1List.Add(i, adcVal1[i]);
+                adc2List.Add(i, adcVal2[i]);
 
-        public void UpdateComs()
+                correlation += adcVal1[i] * adcVal2[i];
+
+                currentGraphX++;
+            }
+
+            correlation /= (DATA_LENGTH - 1);
+            var (maxShift, maxCorrelation) = FindMaxShift(adcVal1, adcVal2);
+
+            lblCurrentCorrelation.Text = correlation.ToString("0.000");
+            lblMaxShift.Text = maxShift.ToString();
+            lblMaxCorrelation.Text = maxCorrelation.ToString("0.000");
+            
+
+
+            //zedGraphControl1.GraphPane.XAxis.Scale.Min = 0; //currentGraphX - graphCapacity;
+            //zedGraphControl1.GraphPane.XAxis.Scale.Max = 256; //currentGraphX;
+            zedGraphControl1.AxisChange();
+            zedGraphControl1.Invalidate();
+        }
+
+
+        private void UpdateComs()
         {
             cboxComs.Items.Clear();
 
@@ -92,5 +138,46 @@ namespace SoundDirectionViiewer
                 cboxComs.Items.Add(name);
         }
 
+        private (int maxShift, double maxCorrelation) FindMaxShift(double[] a, double[] b)
+        {
+            int maxShift = 0;
+            double maxCorrelation = 0;
+
+            for (int shift = 0; shift < a.Length / 4; shift++)
+            {
+                double c = CalcCorrelation(a, b, shift);
+                if (c > maxCorrelation)
+                {
+                    maxCorrelation = c;
+                    maxShift = shift;
+                }
+
+                c = CalcCorrelation(a, b, -shift);
+                if (c > maxCorrelation)
+                {
+                    maxCorrelation = c;
+                    maxShift = -shift;
+                }
+            }
+
+            return (maxShift, maxCorrelation);
+        }
+
+        private double CalcCorrelation(double[] a, double[] b, int shift)
+        {
+            double correlation = 0;
+            int length = a.Length - Math.Abs(shift);
+
+            for (int i = 0; i < length; i++)
+            {
+                if (shift > 0)
+                    correlation += a[i + shift] * b[i];
+                else
+                    correlation += a[i] * b[i - shift];
+            }
+
+            return correlation / length;
+        }
+        
     }
 }

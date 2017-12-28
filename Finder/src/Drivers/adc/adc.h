@@ -10,7 +10,7 @@
 #include "stm32f30x_misc.h"
 #include <Drivers/gpio/gpio.h>
 
-#define ADC_BUFFER_SIZE 1024
+#define ADC_BUFFER_SIZE 512
 
 typedef void (*AdcHandler)(uint16_t* buffer, int length);
 void AdcInit(AdcHandler handler);
