@@ -13,31 +13,64 @@ using ZedGraph;
 
 namespace SoundDirectionViiewer
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IDisposable
     {
-        const int DATA_LENGTH = 256;
+        const int DATA_LENGTH = 256;                                // Размер буфера
+        private const double ADC_REF_V = 3.3;                       // Опорное напряжение
+        private double T_SAMPL = 180.0 / 72000000;                  // Период одного измерения
+        private double D = 0.01;
+
         private SerialPort _com;
         private PackageBuilder _builder;
 
-        private int graphCapacity = 1024;
-        private int currentGraphX;
+        bool IS_ROLLING = false;
         private RollingPointPairList adc1List, adc2List;
-        private const double MIN_VALUE = 0;
-        private const double MAX_VALUE = 1.2;
+        private int currentGraphX;
+        private int GRAPH_CAPACITY = 1024;
+        private const double Y_MIN_VALUE = -0.1 * ADC_REF_V;
+        private const double Y_MAX_VALUE = 1.2 * ADC_REF_V;
+        private const double X_MIN_VALUE = 0;
+        private const double X_MAX_VALUE = DATA_LENGTH;
+
+        private RollingPointPairList angleList;
+        private int currentAngleX;
+        private int ANGLE_GRAPH_CAPACITY = 512;
+        private const double ANGLE_Y_MIN_VALUE = -100;
+        private const double ANGLE_Y_MAX_VALUE = 100;
 
         public Form1()
         {
             InitializeComponent();
 
-            adc1List = new RollingPointPairList(graphCapacity);
-            adc2List = new RollingPointPairList(graphCapacity);
+            adc1List = new RollingPointPairList(GRAPH_CAPACITY);
+            adc2List = new RollingPointPairList(GRAPH_CAPACITY);
             zedGraphControl1.GraphPane.AddCurve("ADC1", adc1List, Color.Red, SymbolType.None);
             zedGraphControl1.GraphPane.AddCurve("ADC2", adc2List, Color.Green, SymbolType.None);
 
-            zedGraphControl1.GraphPane.YAxis.Scale.Min = MIN_VALUE;
-            zedGraphControl1.GraphPane.YAxis.Scale.Max = MAX_VALUE;
+            var pane = zedGraphControl1.GraphPane;
+            pane.YAxis.Scale.Min = Y_MIN_VALUE;
+            pane.YAxis.Scale.Max = Y_MAX_VALUE;
+            pane.XAxis.Scale.Min = X_MIN_VALUE;
+            pane.XAxis.Scale.Max = X_MAX_VALUE;
+            pane.XAxis.Title.Text = "Отсчеты";
+            pane.YAxis.Title.Text = "Напряжение, В";
+            pane.Title.Text = "";
+
             zedGraphControl1.AxisChange();
             zedGraphControl1.Invalidate();
+
+            angleList = new RollingPointPairList(ANGLE_GRAPH_CAPACITY);
+            pane = zedGraphControl2.GraphPane;
+            pane.AddCurve("Shift", angleList, Color.Red, SymbolType.None);
+
+            pane.YAxis.Scale.Min = ANGLE_Y_MIN_VALUE;
+            pane.YAxis.Scale.Max = ANGLE_Y_MAX_VALUE;
+            pane.XAxis.Title.Text = "Индекс";
+            pane.YAxis.Title.Text = "Сдвиг";
+            pane.Title.Text = "";
+
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Invalidate();
 
             _com = new SerialPort();
             _builder = new PackageBuilder(new byte[]{0x32, 0xFA, 0x12}, DATA_LENGTH * 2 * sizeof(UInt16));            
@@ -46,6 +79,7 @@ namespace SoundDirectionViiewer
 
             UpdateComs();
         }
+
 
         private void btnRefreshComs_Click(object sender, EventArgs e)
         {
@@ -62,6 +96,9 @@ namespace SoundDirectionViiewer
             }
             else
             {
+                if (cboxComs.SelectedText == null)
+                    return;
+
                 _com.PortName = cboxComs.SelectedText;
                 _com.BaudRate = 57600;
 
@@ -88,7 +125,11 @@ namespace SoundDirectionViiewer
 
         private void _builder_PackageReceived(object sender, byte[] package)
         {
-            Invoke((MethodInvoker)(()=>packageReceived(package)));
+            try
+            {
+                Invoke((MethodInvoker)(() => packageReceived(package)));
+            }
+            catch (ObjectDisposedException) { }
         }
 
 
@@ -96,36 +137,49 @@ namespace SoundDirectionViiewer
         {
             double[]  adcVal1 = new double[DATA_LENGTH];
             double[] adcVal2 = new double[DATA_LENGTH];
-            double correlation = 0;
-            
-            adc1List.Clear();
-            adc2List.Clear();
+
+            if (!IS_ROLLING)
+            {
+                adc1List.Clear();
+                adc2List.Clear();
+            }
             
             for (int i = 0; i < DATA_LENGTH-1; i++)
             {
-                adcVal1[i] = BitConverter.ToUInt16(package, i*4) / 4096.0 * 1;
-                adcVal2[i] = BitConverter.ToUInt16(package, i * 4 + 2) / 4096.0 * 1;
-                adc1List.Add(i, adcVal1[i]);
-                adc2List.Add(i, adcVal2[i]);
+                int x = IS_ROLLING ? currentGraphX : i;
 
-                correlation += adcVal1[i] * adcVal2[i];
+                adcVal1[i] = BitConverter.ToUInt16(package, i*4) / 4096.0 * ADC_REF_V;
+                adcVal2[i] = BitConverter.ToUInt16(package, i * 4 + 2) / 4096.0 * ADC_REF_V;
+                adc1List.Add(x, adcVal1[i]);
+                adc2List.Add(x, adcVal2[i]);
 
                 currentGraphX++;
             }
+            
+            var corr = FindMaxShift(adcVal1, adcVal2);
+            double shift = corr.MaxShift * T_SAMPL;
+            double angle = Math.Sign(shift) * Math.Asin(shift * 343.0 / D);
 
-            correlation /= (DATA_LENGTH - 1);
-            var (maxShift, maxCorrelation) = FindMaxShift(adcVal1, adcVal2);
-
-            lblCurrentCorrelation.Text = correlation.ToString("0.000");
-            lblMaxShift.Text = maxShift.ToString();
-            lblMaxCorrelation.Text = maxCorrelation.ToString("0.000");
             
 
+            lblMaxShift.Text = corr.MaxShift.ToString();
+            lblMaxCorrelation.Text = angle.ToString("000.000");
 
-            //zedGraphControl1.GraphPane.XAxis.Scale.Min = 0; //currentGraphX - graphCapacity;
-            //zedGraphControl1.GraphPane.XAxis.Scale.Max = 256; //currentGraphX;
-            zedGraphControl1.AxisChange();
+            if (IS_ROLLING)
+            {
+                zedGraphControl1.GraphPane.XAxis.Scale.Min = currentGraphX - GRAPH_CAPACITY;
+                zedGraphControl1.GraphPane.XAxis.Scale.Max = currentGraphX;
+                zedGraphControl1.AxisChange();
+            }
             zedGraphControl1.Invalidate();
+
+            angleList.Add(currentAngleX++, corr.MaxShift);
+            zedGraphControl2.GraphPane.XAxis.Scale.Min = currentAngleX - ANGLE_GRAPH_CAPACITY;
+            zedGraphControl2.GraphPane.XAxis.Scale.Max = currentAngleX;
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Invalidate();
+
+
         }
 
 
@@ -138,7 +192,7 @@ namespace SoundDirectionViiewer
                 cboxComs.Items.Add(name);
         }
 
-        private (int maxShift, double maxCorrelation) FindMaxShift(double[] a, double[] b)
+        private CorrelationResult FindMaxShift(double[] a, double[] b)
         {
             int maxShift = 0;
             double maxCorrelation = 0;
@@ -160,7 +214,7 @@ namespace SoundDirectionViiewer
                 }
             }
 
-            return (maxShift, maxCorrelation);
+            return new CorrelationResult() { MaxShift = maxShift, MaxCorrelation = maxCorrelation } ;
         }
 
         private double CalcCorrelation(double[] a, double[] b, int shift)
@@ -178,6 +232,12 @@ namespace SoundDirectionViiewer
 
             return correlation / length;
         }
-        
+       
+    }
+
+    struct CorrelationResult
+    {
+        public int MaxShift { get; set; }
+        public double MaxCorrelation { get; set;}
     }
 }

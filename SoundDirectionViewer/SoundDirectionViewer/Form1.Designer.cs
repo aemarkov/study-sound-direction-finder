@@ -38,6 +38,7 @@
             this.lblCurrentCorrelation = new System.Windows.Forms.Label();
             this.lblMaxShift = new System.Windows.Forms.Label();
             this.lblMaxCorrelation = new System.Windows.Forms.Label();
+            this.zedGraphControl2 = new ZedGraph.ZedGraphControl();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             this.btnOpenCom});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(586, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(1177, 28);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -130,11 +131,27 @@
             this.lblMaxCorrelation.TabIndex = 4;
             this.lblMaxCorrelation.Text = "label1";
             // 
+            // zedGraphControl2
+            // 
+            this.zedGraphControl2.Location = new System.Drawing.Point(598, 31);
+            this.zedGraphControl2.Name = "zedGraphControl2";
+            this.zedGraphControl2.ScrollGrace = 0D;
+            this.zedGraphControl2.ScrollMaxX = 0D;
+            this.zedGraphControl2.ScrollMaxY = 0D;
+            this.zedGraphControl2.ScrollMaxY2 = 0D;
+            this.zedGraphControl2.ScrollMinX = 0D;
+            this.zedGraphControl2.ScrollMinY = 0D;
+            this.zedGraphControl2.ScrollMinY2 = 0D;
+            this.zedGraphControl2.Size = new System.Drawing.Size(562, 402);
+            this.zedGraphControl2.TabIndex = 5;
+            this.zedGraphControl2.UseExtendedPrintDialog = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 568);
+            this.ClientSize = new System.Drawing.Size(1177, 568);
+            this.Controls.Add(this.zedGraphControl2);
             this.Controls.Add(this.lblMaxCorrelation);
             this.Controls.Add(this.lblMaxShift);
             this.Controls.Add(this.lblCurrentCorrelation);
@@ -160,6 +177,7 @@
         private System.Windows.Forms.Label lblCurrentCorrelation;
         private System.Windows.Forms.Label lblMaxShift;
         private System.Windows.Forms.Label lblMaxCorrelation;
+        private ZedGraph.ZedGraphControl zedGraphControl2;
     }
 }
 
