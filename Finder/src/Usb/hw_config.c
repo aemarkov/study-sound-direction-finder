@@ -64,6 +64,9 @@ uint32_t USART_Rx_ptr_in = 0;
 uint32_t USART_Rx_ptr_out = 0;
 uint32_t USART_Rx_length  = 0;
 
+uint8_t* USART_Tx_Buffer;
+uint16_t USART_Tx_Buffer_length;
+
 uint8_t  USB_Tx_State = 0;
 static void IntToUnicode (uint32_t value , uint8_t *pbuf , uint8_t len);
 /* Extern variables ----------------------------------------------------------*/
@@ -440,7 +443,7 @@ void Handle_USBAsynchXfer (void)
       return;
     }
 
-    if(USART_Rx_ptr_out > USART_Rx_ptr_in) /* rollback */
+    if(USART_Rx_ptr_out > USART_Rx_ptr_in) //rollback 
     {
       USART_Rx_length = USART_RX_DATA_SIZE - USART_Rx_ptr_out;
     }
@@ -474,6 +477,14 @@ void Handle_USBAsynchXfer (void)
   
 }
 
+/*void Handle_USBAsynchXfer (void)
+{
+    USB_Tx_State = 1;
+    UserToPMABufferCopy(USART_Tx_Buffer, ENDP1_TXADDR, USART_Tx_Buffer_length);
+    SetEPTxCount(ENDP1, USART_Tx_Buffer_length);
+    SetEPTxValid(ENDP1); 
+}*/
+
 /*******************************************************************************
 * Function Name  : UART_To_USB_Send_Data.
 * Description    : send the received data from UART 0 to USB.
@@ -486,7 +497,7 @@ void USB_Send_Byte(uint8_t data)
   USART_Rx_Buffer[USART_Rx_ptr_in] = data;
   USART_Rx_ptr_in++;
 
-  /* To avoid buffer overflow */
+  //
   if(USART_Rx_ptr_in >= USART_RX_DATA_SIZE)
   {
     USART_Rx_ptr_in = 0;
@@ -497,6 +508,12 @@ void USB_Send_Data(uint8_t* data, int size)
 {
     for(int i = 0; i<size; i++)
         USB_Send_Byte(data[i]);
+}
+
+void USB_SetBuffer(uint8_t* buffer, uint16_t size)
+{
+    USART_Tx_Buffer = buffer;
+    USART_Tx_Buffer_length = size;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

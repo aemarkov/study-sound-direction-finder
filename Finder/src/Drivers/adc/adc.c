@@ -114,7 +114,7 @@ void TimerInit()
     // Частота - 4кГц
     TIM_TimeBaseInitTypeDef timInit;    
     TIM_TimeBaseStructInit(&timInit);
-    timInit.TIM_Prescaler = 1;
+    timInit.TIM_Prescaler = 100;
     timInit.TIM_Period = 180;
     TIM_TimeBaseInit(TIM6, &timInit);
     

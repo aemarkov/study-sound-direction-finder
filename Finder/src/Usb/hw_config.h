@@ -69,6 +69,7 @@ void USB_Cable_Config (FunctionalState NewState);
 void Get_SerialNum(void);
 
 void Handle_USBAsynchXfer (void);
+void USB_SetBuffer(uint8_t* buffer, uint16_t size);
 void USB_Send_Byte(uint8_t data);
 void USB_Send_Data(uint8_t* data, int size);
 /* External variables --------------------------------------------------------*/

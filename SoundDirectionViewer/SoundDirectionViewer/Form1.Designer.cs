@@ -28,17 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.cboxComs = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefreshComs = new System.Windows.Forms.ToolStripButton();
             this.btnOpenCom = new System.Windows.Forms.ToolStripButton();
-            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.lblCurrentCorrelation = new System.Windows.Forms.Label();
             this.lblMaxShift = new System.Windows.Forms.Label();
             this.lblMaxCorrelation = new System.Windows.Forms.Label();
-            this.zedGraphControl2 = new ZedGraph.ZedGraphControl();
+            this.sgraphShift = new SoundDirectionViiewer.Components.ScrollingGraph();
+            this.sgraphAdc = new SoundDirectionViiewer.Components.ScrollingGraph();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,21 +88,6 @@
             this.btnOpenCom.Text = "Подключиться";
             this.btnOpenCom.Click += new System.EventHandler(this.btnOpenCom_Click);
             // 
-            // zedGraphControl1
-            // 
-            this.zedGraphControl1.Location = new System.Drawing.Point(12, 31);
-            this.zedGraphControl1.Name = "zedGraphControl1";
-            this.zedGraphControl1.ScrollGrace = 0D;
-            this.zedGraphControl1.ScrollMaxX = 0D;
-            this.zedGraphControl1.ScrollMaxY = 0D;
-            this.zedGraphControl1.ScrollMaxY2 = 0D;
-            this.zedGraphControl1.ScrollMinX = 0D;
-            this.zedGraphControl1.ScrollMinY = 0D;
-            this.zedGraphControl1.ScrollMinY2 = 0D;
-            this.zedGraphControl1.Size = new System.Drawing.Size(562, 402);
-            this.zedGraphControl1.TabIndex = 1;
-            this.zedGraphControl1.UseExtendedPrintDialog = true;
-            // 
             // lblCurrentCorrelation
             // 
             this.lblCurrentCorrelation.AutoSize = true;
@@ -131,31 +115,44 @@
             this.lblMaxCorrelation.TabIndex = 4;
             this.lblMaxCorrelation.Text = "label1";
             // 
-            // zedGraphControl2
+            // sgraphShift
             // 
-            this.zedGraphControl2.Location = new System.Drawing.Point(598, 31);
-            this.zedGraphControl2.Name = "zedGraphControl2";
-            this.zedGraphControl2.ScrollGrace = 0D;
-            this.zedGraphControl2.ScrollMaxX = 0D;
-            this.zedGraphControl2.ScrollMaxY = 0D;
-            this.zedGraphControl2.ScrollMaxY2 = 0D;
-            this.zedGraphControl2.ScrollMinX = 0D;
-            this.zedGraphControl2.ScrollMinY = 0D;
-            this.zedGraphControl2.ScrollMinY2 = 0D;
-            this.zedGraphControl2.Size = new System.Drawing.Size(562, 402);
-            this.zedGraphControl2.TabIndex = 5;
-            this.zedGraphControl2.UseExtendedPrintDialog = true;
+            this.sgraphShift.IsRolling = true;
+            this.sgraphShift.Location = new System.Drawing.Point(580, 31);
+            this.sgraphShift.MaxValue = 10D;
+            this.sgraphShift.MinValue = -10D;
+            this.sgraphShift.Name = "sgraphShift";
+            this.sgraphShift.Size = new System.Drawing.Size(585, 402);
+            this.sgraphShift.TabIndex = 5;
+            this.sgraphShift.Title = "";
+            this.sgraphShift.WindowSize = 1000;
+            this.sgraphShift.XTitle = "Индекс";
+            this.sgraphShift.YTitle = "Отсчеты";
+            // 
+            // sgraphAdc
+            // 
+            this.sgraphAdc.IsRolling = false;
+            this.sgraphAdc.Location = new System.Drawing.Point(12, 31);
+            this.sgraphAdc.MaxValue = 4D;
+            this.sgraphAdc.MinValue = 0D;
+            this.sgraphAdc.Name = "sgraphAdc";
+            this.sgraphAdc.Size = new System.Drawing.Size(562, 402);
+            this.sgraphAdc.TabIndex = 6;
+            this.sgraphAdc.Title = "";
+            this.sgraphAdc.WindowSize = 256;
+            this.sgraphAdc.XTitle = "Отсчеты";
+            this.sgraphAdc.YTitle = "В";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1177, 568);
-            this.Controls.Add(this.zedGraphControl2);
+            this.Controls.Add(this.sgraphAdc);
+            this.Controls.Add(this.sgraphShift);
             this.Controls.Add(this.lblMaxCorrelation);
             this.Controls.Add(this.lblMaxShift);
             this.Controls.Add(this.lblCurrentCorrelation);
-            this.Controls.Add(this.zedGraphControl1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -173,11 +170,11 @@
         private System.Windows.Forms.ToolStripButton btnRefreshComs;
         private System.Windows.Forms.ToolStripButton btnOpenCom;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private ZedGraph.ZedGraphControl zedGraphControl1;
         private System.Windows.Forms.Label lblCurrentCorrelation;
         private System.Windows.Forms.Label lblMaxShift;
         private System.Windows.Forms.Label lblMaxCorrelation;
-        private ZedGraph.ZedGraphControl zedGraphControl2;
+        private Components.ScrollingGraph sgraphShift;
+        private Components.ScrollingGraph sgraphAdc;
     }
 }
 

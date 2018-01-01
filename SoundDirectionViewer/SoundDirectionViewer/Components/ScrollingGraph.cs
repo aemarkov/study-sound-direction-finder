@@ -10,38 +10,70 @@ namespace SoundDirectionViiewer.Components
 {
     public partial class ScrollingGraph : UserControl
     {
+        public int WindowSize { get => _windowSize; set => _windowSize = value; }
+
+        public double MinValue { get => _minValue; set => _minValue = value; }
+     
+        public double MaxValue { get => _maxValue; set => _maxValue = value; }
+
+        public bool IsRolling { get => _isRolling; set => _isRolling = value;
+        }
+
+        public string Title
+        {
+            get => graph.GraphPane.Title.Text;
+            set
+            {
+                graph.GraphPane.Title.Text = value; 
+                graph.Invalidate();
+            }
+        }
+
+        public string XTitle
+        {
+            get => graph.GraphPane.XAxis.Title.Text;
+            set
+            {
+                graph.GraphPane.XAxis.Title.Text = value; 
+                graph.Invalidate();
+            }
+        }
+
+        public string YTitle
+        {
+            get => graph.GraphPane.YAxis.Title.Text;
+            set
+            {
+                graph.GraphPane.YAxis.Title.Text = value;
+                graph.Invalidate();
+            }
+        }
+
+        private bool _isRolling;
         private int _windowSize;
         private double _minValue;
         private double _maxValue;
 
-        [Description("Windows Size")]
-        public int WindowSize { get { return _windowSize; } set { _windowSize = value; } }
-
-        [Description("Min Value")]
-        public double MinValue { get { return _minValue; } set { _minValue = value; } }
-
-        [Description("Max Value")]
-        public double MaxValue { get { return _maxValue; } set { _maxValue = value; } }
-
-        private Dictionary<string, PointPairList> _channels;
-        private int index;
-        private LineItem curve;
+        private List<RollingPointPairList> _channels;
+        private int x;
+        
 
         public ScrollingGraph()
         {
             _windowSize = 1000;
             _maxValue = 100;
+            IsRolling = true;
             _minValue = 0;
 
             InitializeComponent();
 
-            _channels = new Dictionary<string, PointPairList>();
+            _channels = new List<RollingPointPairList>();
         }
 
         public void AddChannel(string name, Color color)
         {
-            var list = new PointPairList();
-            _channels.Add(name, list);
+            var list = new RollingPointPairList(WindowSize);
+            _channels.Add(list);
 
             var pane = graph.GraphPane;
             pane.AddCurve(name, list, color, SymbolType.None);
@@ -50,31 +82,42 @@ namespace SoundDirectionViiewer.Components
             graph.Invalidate();
         }
 
-        public void AddData(string name, float y)
+        public void AddData(double x, params double[] y)
         {
-            //if(!_channels.ContainsKey(name))
-            //    throw new ArgumentException("Channel doesn't exists in graph", nameof(name));
+            double xVal = IsRolling ? this.x : x;
 
-            var dataList = _channels[name];
+            if(y.Length != _channels.Count)
+                throw new ArgumentException("Неверное количество каналов");
 
-            dataList.Add(index, y);
-            index++;
+            for (int i = 0; i < y.Length; i++)            
+               _channels[i].Add(xVal, y[i]);
+        }
 
-            if (dataList.Count > WindowSize)
-                dataList.RemoveAt(0);
+        public new void Invalidate()
+        {
+            var pane = graph.GraphPane;
 
-            graph.GraphPane.XAxis.Scale.Min = dataList.First().X;
+            if (IsRolling)
+            {
+                x++;
+                pane.XAxis.Scale.Min = x - WindowSize;
+                pane.XAxis.Scale.Max = x;
+            }
 
-            if (dataList.Count < WindowSize)
-                graph.GraphPane.XAxis.Scale.Max = WindowSize;
-            else
-                graph.GraphPane.XAxis.Scale.Max = dataList.Last().X;
-
-            graph.GraphPane.YAxis.Scale.Min = MinValue;
-            graph.GraphPane.YAxis.Scale.Max = MaxValue;
+            pane.YAxis.Scale.Min = MinValue;
+            pane.YAxis.Scale.Max = MaxValue;
 
             graph.AxisChange();
             graph.Invalidate();
+        }
+
+        public void Clear()
+        {
+            if (IsRolling)
+                return;
+
+            foreach (var channel in _channels)
+                channel.Clear();
         }
     }
 }
