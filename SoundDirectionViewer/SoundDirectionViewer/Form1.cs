@@ -23,7 +23,7 @@ namespace SoundDirectionViiewer
         private SerialPort _com;
         private PackageBuilder _builder;
 
-        
+        private double[] data1, data2;
     
         public Form1()
         {
@@ -33,10 +33,17 @@ namespace SoundDirectionViiewer
             sgraphAdc.AddChannel("ADC2", Color.Green);
             sgraphShift.AddChannel("Сдвиг", Color.Red);
             
+            data1 = new double[DATA_LENGTH];
+            data2 = new double[DATA_LENGTH];
+
             _com = new SerialPort();
             _builder = new PackageBuilder(new byte[]{0x32, 0xFA, 0x12}, DATA_LENGTH * 2 * sizeof(UInt16));            
             _com.DataReceived += _com_DataReceived;
             _builder.PackageReceived += _builder_PackageReceived;
+
+            sgraphAdc.WindowSize = DATA_LENGTH;
+            sgraphAdc.MaxValue = 1.1;
+            sgraphAdc.MinValue = -0.1;
 
             UpdateComs();
         }
@@ -99,40 +106,46 @@ namespace SoundDirectionViiewer
 
         private void packageReceived(byte[] package)
         {
-            double[]  adcVal1 = new double[DATA_LENGTH];
-            double[] adcVal2 = new double[DATA_LENGTH];
+            double[] dataOut1 = new double[DATA_LENGTH];
+            double[] dataOut2 = new double[DATA_LENGTH];
+
+
+            GetDataFromPackage(package, ref data1, ref data2);
+            Normalize(data1);
+            Normalize(data2); 
             
-            sgraphAdc.Clear();
+            //MovingAverage(data1, dataOut1, 10);
+            //MovingAverage(data2, dataOut2, 10);
 
-            for (int i = 0; i < DATA_LENGTH-1; i++)
-            {
-                adcVal1[i] = BitConverter.ToUInt16(package, i*4) / 4096.0 * ADC_REF_V;
-                adcVal2[i] = BitConverter.ToUInt16(package, i * 4 + 2) / 4096.0 * ADC_REF_V;
-                sgraphAdc.AddData(i, adcVal1[i], adcVal2[i]);
-            }
-            
-            var corr = FindMaxShift(adcVal1, adcVal2);
-            double shift = corr.MaxShift * T_SAMPL;
-            double angle = Math.Sign(shift) * Math.Asin(shift * 343.0 / D);
-                   
-            lblMaxShift.Text = corr.MaxShift.ToString();
-            lblMaxCorrelation.Text = angle.ToString("000.000");
-
-            sgraphShift.AddData(0, corr.MaxShift);
-
-            sgraphAdc.Invalidate();
-            sgraphShift.Invalidate();
+            DrawData(data1, dataOut1);
         }
 
 
-        private void UpdateComs()
+
+        // Нормализует ряд данных
+        private void Normalize(double[] data)
         {
-            cboxComs.Items.Clear();
-
-            var names = SerialPort.GetPortNames();
-            foreach (var name in names)
-                cboxComs.Items.Add(name);
+            double max = data.Max();
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] /= max;
+            }
         }
+
+        private void MovingAverage(double[] dataIn, double[] dataOut, int size)
+        {
+            double sum = 0;
+
+            for (int i = 0; i < dataIn.Length; i++)
+            {
+                sum += dataIn[i];
+                if (i > size)
+                    sum -= dataIn[i - size];
+
+                dataOut[i] = sum / size;
+            }
+        }
+
 
         private CorrelationResult FindMaxShift(double[] a, double[] b)
         {
@@ -174,7 +187,40 @@ namespace SoundDirectionViiewer
 
             return correlation / length;
         }
-       
+
+
+
+        // Извлекает отдельные данные первого и второго канала из пакета
+        private void GetDataFromPackage(byte[] buffer, ref double[] data1, ref double[] data2)
+        {
+            for (int i = 0; i < DATA_LENGTH - 1; i++)
+            {
+                data1[i] = BitConverter.ToUInt16(buffer, i * 4);
+                data2[i] = BitConverter.ToUInt16(buffer, i * 4 + 2);
+            }
+        }
+
+        // Рисует два графика
+        private void DrawData(double[] data1, double[] data2)
+        {
+            sgraphAdc.Clear();
+            for (int i = 0; i < data1.Length; i++)
+                sgraphAdc.AddData(i, data1[i], data2[i]);
+
+            sgraphAdc.Invalidate();
+        }
+
+
+        private void UpdateComs()
+        {
+            cboxComs.Items.Clear();
+
+            var names = SerialPort.GetPortNames();
+            foreach (var name in names)
+                cboxComs.Items.Add(name);
+        }
+
+
     }
 
     struct CorrelationResult

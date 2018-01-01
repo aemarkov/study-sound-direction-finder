@@ -13,6 +13,7 @@ DebugConfig/
 *.uvguix.*
 *.tmp
 *.TMP
+JLinkLog.txt
 
 ######## VISUAL STUDIO ###########
 
