@@ -22,12 +22,19 @@
 #define HEADER_SIZE 3
 uint8_t header[HEADER_SIZE] = {0x32, 0xFA, 0x12};
 
+int cnt = 0;
+int sendEvery  = 3;
+
 void HandleAdc(uint16_t* buffer, int length)
 {
-    GPIOE->ODR^=GPIO_Pin_8;
-    USB_Send_Data(header, HEADER_SIZE);       
-    USB_Send_Data((uint8_t*)buffer, length*sizeof(uint16_t));
-    //USB_SetBuffer((uint8_t*)buffer, length * sizeof(uint16_t));
+    cnt++;
+    if(cnt % sendEvery == 0)
+    {    
+        GPIOE->ODR^=GPIO_Pin_8;
+        USB_Send_Data(header, HEADER_SIZE);       
+        USB_Send_Data((uint8_t*)buffer, length*sizeof(uint16_t));
+        //USB_SetBuffer((uint8_t*)buffer, length * sizeof(uint16_t));
+    }
 }
 
 int main(void)

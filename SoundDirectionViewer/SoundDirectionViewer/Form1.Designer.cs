@@ -33,11 +33,9 @@
             this.cboxComs = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefreshComs = new System.Windows.Forms.ToolStripButton();
             this.btnOpenCom = new System.Windows.Forms.ToolStripButton();
-            this.lblCurrentCorrelation = new System.Windows.Forms.Label();
-            this.lblMaxShift = new System.Windows.Forms.Label();
-            this.lblMaxCorrelation = new System.Windows.Forms.Label();
-            this.sgraphShift = new SoundDirectionViiewer.Components.ScrollingGraph();
+            this.sgraphSpectrum = new SoundDirectionViiewer.Components.ScrollingGraph();
             this.sgraphAdc = new SoundDirectionViiewer.Components.ScrollingGraph();
+            this.sgraphShift = new SoundDirectionViiewer.Components.ScrollingGraph();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +49,7 @@
             this.btnOpenCom});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1177, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(1487, 28);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -88,71 +86,68 @@
             this.btnOpenCom.Text = "Подключиться";
             this.btnOpenCom.Click += new System.EventHandler(this.btnOpenCom_Click);
             // 
-            // lblCurrentCorrelation
+            // sgraphSpectrum
             // 
-            this.lblCurrentCorrelation.AutoSize = true;
-            this.lblCurrentCorrelation.Location = new System.Drawing.Point(12, 443);
-            this.lblCurrentCorrelation.Name = "lblCurrentCorrelation";
-            this.lblCurrentCorrelation.Size = new System.Drawing.Size(35, 13);
-            this.lblCurrentCorrelation.TabIndex = 2;
-            this.lblCurrentCorrelation.Text = "label1";
-            // 
-            // lblMaxShift
-            // 
-            this.lblMaxShift.AutoSize = true;
-            this.lblMaxShift.Location = new System.Drawing.Point(12, 456);
-            this.lblMaxShift.Name = "lblMaxShift";
-            this.lblMaxShift.Size = new System.Drawing.Size(35, 13);
-            this.lblMaxShift.TabIndex = 3;
-            this.lblMaxShift.Text = "label1";
-            // 
-            // lblMaxCorrelation
-            // 
-            this.lblMaxCorrelation.AutoSize = true;
-            this.lblMaxCorrelation.Location = new System.Drawing.Point(12, 469);
-            this.lblMaxCorrelation.Name = "lblMaxCorrelation";
-            this.lblMaxCorrelation.Size = new System.Drawing.Size(35, 13);
-            this.lblMaxCorrelation.TabIndex = 4;
-            this.lblMaxCorrelation.Text = "label1";
-            // 
-            // sgraphShift
-            // 
-            this.sgraphShift.IsRolling = true;
-            this.sgraphShift.Location = new System.Drawing.Point(580, 31);
-            this.sgraphShift.MaxValue = 10D;
-            this.sgraphShift.MinValue = -10D;
-            this.sgraphShift.Name = "sgraphShift";
-            this.sgraphShift.Size = new System.Drawing.Size(585, 402);
-            this.sgraphShift.TabIndex = 5;
-            this.sgraphShift.Title = "";
-            this.sgraphShift.WindowSize = 1000;
-            this.sgraphShift.XTitle = "Индекс";
-            this.sgraphShift.YTitle = "Отсчеты";
+            this.sgraphSpectrum.IsRolling = false;
+            this.sgraphSpectrum.IsXAutoScale = true;
+            this.sgraphSpectrum.IsYAutoScale = false;
+            this.sgraphSpectrum.Location = new System.Drawing.Point(518, 31);
+            this.sgraphSpectrum.Name = "sgraphSpectrum";
+            this.sgraphSpectrum.Size = new System.Drawing.Size(500, 400);
+            this.sgraphSpectrum.TabIndex = 7;
+            this.sgraphSpectrum.Title = "";
+            this.sgraphSpectrum.WindowSize = 1000;
+            this.sgraphSpectrum.XMaxValue = 0D;
+            this.sgraphSpectrum.XMinValue = 0D;
+            this.sgraphSpectrum.XTitle = "Частота";
+            this.sgraphSpectrum.YMaxValue = 5D;
+            this.sgraphSpectrum.YMinValue = -5D;
+            this.sgraphSpectrum.YTitle = "Амплитуда";
             // 
             // sgraphAdc
             // 
             this.sgraphAdc.IsRolling = false;
+            this.sgraphAdc.IsXAutoScale = false;
+            this.sgraphAdc.IsYAutoScale = false;
             this.sgraphAdc.Location = new System.Drawing.Point(12, 31);
-            this.sgraphAdc.MaxValue = 4D;
-            this.sgraphAdc.MinValue = 0D;
             this.sgraphAdc.Name = "sgraphAdc";
-            this.sgraphAdc.Size = new System.Drawing.Size(562, 402);
+            this.sgraphAdc.Size = new System.Drawing.Size(500, 400);
             this.sgraphAdc.TabIndex = 6;
             this.sgraphAdc.Title = "";
             this.sgraphAdc.WindowSize = 256;
+            this.sgraphAdc.XMaxValue = 0D;
+            this.sgraphAdc.XMinValue = 0D;
             this.sgraphAdc.XTitle = "Отсчеты";
-            this.sgraphAdc.YTitle = "В";
+            this.sgraphAdc.YMaxValue = 4D;
+            this.sgraphAdc.YMinValue = 0D;
+            this.sgraphAdc.YTitle = "Амплитуда";
+            // 
+            // sgraphShift
+            // 
+            this.sgraphShift.IsRolling = true;
+            this.sgraphShift.IsXAutoScale = false;
+            this.sgraphShift.IsYAutoScale = true;
+            this.sgraphShift.Location = new System.Drawing.Point(1024, 31);
+            this.sgraphShift.Name = "sgraphShift";
+            this.sgraphShift.Size = new System.Drawing.Size(500, 400);
+            this.sgraphShift.TabIndex = 5;
+            this.sgraphShift.Title = "";
+            this.sgraphShift.WindowSize = 1000;
+            this.sgraphShift.XMaxValue = 0D;
+            this.sgraphShift.XMinValue = 0D;
+            this.sgraphShift.XTitle = "Время";
+            this.sgraphShift.YMaxValue = 10D;
+            this.sgraphShift.YMinValue = -10D;
+            this.sgraphShift.YTitle = "Отсчеты";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1177, 568);
+            this.ClientSize = new System.Drawing.Size(1487, 448);
+            this.Controls.Add(this.sgraphSpectrum);
             this.Controls.Add(this.sgraphAdc);
             this.Controls.Add(this.sgraphShift);
-            this.Controls.Add(this.lblMaxCorrelation);
-            this.Controls.Add(this.lblMaxShift);
-            this.Controls.Add(this.lblCurrentCorrelation);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -170,11 +165,9 @@
         private System.Windows.Forms.ToolStripButton btnRefreshComs;
         private System.Windows.Forms.ToolStripButton btnOpenCom;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.Label lblCurrentCorrelation;
-        private System.Windows.Forms.Label lblMaxShift;
-        private System.Windows.Forms.Label lblMaxCorrelation;
         private Components.ScrollingGraph sgraphShift;
         private Components.ScrollingGraph sgraphAdc;
+        private Components.ScrollingGraph sgraphSpectrum;
     }
 }
 

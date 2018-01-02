@@ -10,14 +10,16 @@ namespace SoundDirectionViiewer.Components
 {
     public partial class ScrollingGraph : UserControl
     {
-        public int WindowSize { get => _windowSize; set => _windowSize = value; }
+        public int WindowSize { get; set; }
 
-        public double MinValue { get => _minValue; set => _minValue = value; }
-     
-        public double MaxValue { get => _maxValue; set => _maxValue = value; }
+        public double YMinValue { get; set; }
 
-        public bool IsRolling { get => _isRolling; set => _isRolling = value;
-        }
+        public double YMaxValue { get; set; }
+        public double XMinValue { get; set; }
+        public double XMaxValue { get; set; }
+        public bool IsRolling { get; set; }
+        public bool IsXAutoScale { get; set; }
+        public bool IsYAutoScale { get; set; }
 
         public string Title
         {
@@ -49,21 +51,16 @@ namespace SoundDirectionViiewer.Components
             }
         }
 
-        private bool _isRolling;
-        private int _windowSize;
-        private double _minValue;
-        private double _maxValue;
-
         private List<RollingPointPairList> _channels;
         private int x;
         
 
         public ScrollingGraph()
         {
-            _windowSize = 1000;
-            _maxValue = 100;
+            WindowSize = 1000;
+            YMaxValue = 100;
             IsRolling = true;
-            _minValue = 0;
+            YMinValue = 0;
 
             InitializeComponent();
 
@@ -93,7 +90,7 @@ namespace SoundDirectionViiewer.Components
                _channels[i].Add(xVal, y[i]);
         }
 
-        public new void Invalidate()
+        public void UpdateGraph()
         {
             var pane = graph.GraphPane;
 
@@ -103,12 +100,21 @@ namespace SoundDirectionViiewer.Components
                 pane.XAxis.Scale.Min = x - WindowSize;
                 pane.XAxis.Scale.Max = x;
             }
+            else if (!IsXAutoScale)
+            {
+                pane.XAxis.Scale.Min = XMinValue;
+                pane.XAxis.Scale.Max = XMaxValue;
+            }
 
-            pane.YAxis.Scale.Min = MinValue;
-            pane.YAxis.Scale.Max = MaxValue;
+            if (!IsYAutoScale)
+            {
+                pane.YAxis.Scale.Min = YMinValue;
+                pane.YAxis.Scale.Max = YMaxValue;
+            }
 
             graph.AxisChange();
             graph.Invalidate();
+            graph.Update();
         }
 
         public void Clear()

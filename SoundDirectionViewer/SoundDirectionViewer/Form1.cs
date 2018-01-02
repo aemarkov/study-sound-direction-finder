@@ -5,9 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MathNet.Numerics;
+using MathNet.Numerics.IntegralTransforms;
 using SoundDirectionViiewer.Properties;
 using ZedGraph;
 
@@ -16,34 +19,38 @@ namespace SoundDirectionViiewer
     public partial class Form1 : Form, IDisposable
     {
         const int DATA_LENGTH = 256;                                // Размер буфера
-        private const double ADC_REF_V = 3.3;                       // Опорное напряжение
-        private double T_SAMPL = 180.0 / 72000000;                  // Период одного измерения
-        private double D = 0.01;
+        private const float ADC_REF_V = 3.3f;                       // Опорное напряжение
+        private const float SAMPLE_RATE = 72000000 / 1800.0f;      // Частота дискретизации
+        private double D = 0.01;                                    // Расстояние между двумя микрофонами
 
         private SerialPort _com;
         private PackageBuilder _builder;
 
-        private double[] data1, data2;
-    
+        private float[] data1, data2;
+
         public Form1()
         {
             InitializeComponent();
-            
-            sgraphAdc.AddChannel("ADC1", Color.Red);
-            sgraphAdc.AddChannel("ADC2", Color.Green);
-            sgraphShift.AddChannel("Сдвиг", Color.Red);
-            
-            data1 = new double[DATA_LENGTH];
-            data2 = new double[DATA_LENGTH];
+
+            data1 = new float[DATA_LENGTH];
+            data2 = new float[DATA_LENGTH];
 
             _com = new SerialPort();
-            _builder = new PackageBuilder(new byte[]{0x32, 0xFA, 0x12}, DATA_LENGTH * 2 * sizeof(UInt16));            
+            _builder = new PackageBuilder(new byte[] { 0x32, 0xFA, 0x12 }, DATA_LENGTH * 2 * sizeof(UInt16));
             _com.DataReceived += _com_DataReceived;
             _builder.PackageReceived += _builder_PackageReceived;
 
+            sgraphAdc.AddChannel("ADC1", Color.Red);
+            sgraphAdc.AddChannel("ADC2", Color.Green);
+            sgraphShift.AddChannel("Сдвиг", Color.Red);
+            sgraphSpectrum.AddChannel("Spectrum1", Color.Red);
+            sgraphSpectrum.AddChannel("Spectrum2", Color.Green);
+
             sgraphAdc.WindowSize = DATA_LENGTH;
-            sgraphAdc.MaxValue = 1.1;
-            sgraphAdc.MinValue = -0.1;
+            sgraphAdc.YMaxValue = 1.1;
+            sgraphAdc.YMinValue = -0.1;
+            sgraphAdc.XMinValue = 0;
+            sgraphAdc.XMaxValue = DATA_LENGTH;
 
             UpdateComs();
         }
@@ -67,7 +74,7 @@ namespace SoundDirectionViiewer
                 if (cboxComs.SelectedText == null)
                     return;
 
-                if(cboxComs.SelectedItem == null)
+                if (cboxComs.SelectedItem == null)
                     return;
 
                 _com.PortName = cboxComs.SelectedText;
@@ -106,92 +113,84 @@ namespace SoundDirectionViiewer
 
         private void packageReceived(byte[] package)
         {
-            double[] dataOut1 = new double[DATA_LENGTH];
-            double[] dataOut2 = new double[DATA_LENGTH];
-
-
             GetDataFromPackage(package, ref data1, ref data2);
-            Normalize(data1);
-            Normalize(data2); 
-            
-            //MovingAverage(data1, dataOut1, 10);
-            //MovingAverage(data2, dataOut2, 10);
-
-            DrawData(data1, dataOut1);
-        }
 
 
+            //DataUtils.MovingAverage(data1, 5);
+            //DataUtils.MovingAverage(data2, 20);
+            DataUtils.Normalize(data1);
+            DataUtils.Normalize(data2);
 
-        // Нормализует ряд данных
-        private void Normalize(double[] data)
-        {
-            double max = data.Max();
-            for (int i = 0; i < data.Length; i++)
+            var a = new Complex32[data1.Length];
+            var b = new Complex32[data1.Length];
+            var sp1 = new Complex32[data1.Length];
+            var sp2 = new Complex32[data1.Length];
+            var window = Window.Hamming(data1.Length);
+
+            // Составляем комплексный массив и умножаем на окно Хэмминга
+            for (int i = 0; i < data1.Length; i++)
             {
-                data[i] /= max;
+                a[i] = new Complex32(data1[i] * (float)window[i], 0);
+                b[i] = new Complex32(data2[i] * (float)window[i], 0);
             }
-        }
 
-        private void MovingAverage(double[] dataIn, double[] dataOut, int size)
-        {
-            double sum = 0;
+            // Преобразование фурье
+            Fourier.Forward(a);
+            Fourier.Forward(b);
+            Array.Copy(a, sp1, sp1.Length);
+            Array.Copy(b, sp2, sp2.Length);
 
-            for (int i = 0; i < dataIn.Length; i++)
+
+            // Поэлементно умножаем первое на сопряженное ко второму
+            for (int i = 0; i < a.Length; i++)
+                a[i] = a[i] * b[i].Conjugate();
+
+            // Поэлементно делим на модуль самого себя
+            //for (int i = 0; i < a.Length; i++)
+            //    a[i] = Complex32.Divide(a[i], a[i].Magnitude);
+
+            // Обратное преобразование Фурье
+            //Fourier.Inverse(a);
+
+            int maxI = 0;
+            float max = a[0].Imaginary;
+            for (int i = 0; i < a.Length; i++)
             {
-                sum += dataIn[i];
-                if (i > size)
-                    sum -= dataIn[i - size];
-
-                dataOut[i] = sum / size;
-            }
-        }
-
-
-        private CorrelationResult FindMaxShift(double[] a, double[] b)
-        {
-            int maxShift = 0;
-            double maxCorrelation = 0;
-
-            for (int shift = 0; shift < a.Length / 4; shift++)
-            {
-                double c = CalcCorrelation(a, b, shift);
-                if (c > maxCorrelation)
+                if (Math.Abs(a[i].Imaginary) > max)
                 {
-                    maxCorrelation = c;
-                    maxShift = shift;
-                }
-
-                c = CalcCorrelation(a, b, -shift);
-                if (c > maxCorrelation)
-                {
-                    maxCorrelation = c;
-                    maxShift = -shift;
+                    maxI = i;
+                    max = Math.Abs(a[i].Imaginary);
                 }
             }
 
-            return new CorrelationResult() { MaxShift = maxShift, MaxCorrelation = maxCorrelation } ;
-        }
+            sgraphAdc.Clear();
+            sgraphSpectrum.Clear();
+            sgraphShift.Clear();
 
-        private double CalcCorrelation(double[] a, double[] b, int shift)
-        {
-            double correlation = 0;
-            int length = a.Length - Math.Abs(shift);
-
-            for (int i = 0; i < length; i++)
+            // Отображение спектра
+            for (int i = 0; i < sp1.Length / 2; i++)
             {
-                if (shift > 0)
-                    correlation += a[i + shift] * b[i];
-                else
-                    correlation += a[i] * b[i - shift];
+                float hz = i * SAMPLE_RATE / data1.Length;
+                // sgraphSpectrum.AddData(hz, spectrum1[i].Magnitude, spectrum2[i].Magnitude);
+                sgraphSpectrum.AddData(hz, 0, a[i].Imaginary);
             }
 
-            return correlation / length;
-        }
+            // Отображение сигнала
+            for (int i = 0; i < data1.Length; i++)
+            {
+                sgraphAdc.AddData(i, data1[i], data2[i]);
+            }
 
+            sgraphShift.AddData(0, a[maxI].Imaginary);
+
+            sgraphShift.UpdateGraph();
+            sgraphSpectrum.UpdateGraph();
+            sgraphAdc.UpdateGraph();
+        }
 
 
         // Извлекает отдельные данные первого и второго канала из пакета
-        private void GetDataFromPackage(byte[] buffer, ref double[] data1, ref double[] data2)
+        private void GetDataFromPackage(byte[] buffer, ref float[] data1, ref float[] data2)
         {
             for (int i = 0; i < DATA_LENGTH - 1; i++)
             {
@@ -199,17 +198,6 @@ namespace SoundDirectionViiewer
                 data2[i] = BitConverter.ToUInt16(buffer, i * 4 + 2);
             }
         }
-
-        // Рисует два графика
-        private void DrawData(double[] data1, double[] data2)
-        {
-            sgraphAdc.Clear();
-            for (int i = 0; i < data1.Length; i++)
-                sgraphAdc.AddData(i, data1[i], data2[i]);
-
-            sgraphAdc.Invalidate();
-        }
-
 
         private void UpdateComs()
         {
@@ -226,6 +214,6 @@ namespace SoundDirectionViiewer
     struct CorrelationResult
     {
         public int MaxShift { get; set; }
-        public double MaxCorrelation { get; set;}
+        public double MaxCorrelation { get; set; }
     }
 }
