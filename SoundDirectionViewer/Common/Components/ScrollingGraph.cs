@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using ZedGraph;
 
-namespace SoundDirectionViiewer.Components
+namespace Common.Components
 {
     public partial class ScrollingGraph : UserControl
     {

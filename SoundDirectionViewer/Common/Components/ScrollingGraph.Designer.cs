@@ -1,4 +1,4 @@
-﻿namespace SoundDirectionViiewer.Components
+﻿namespace Common.Components
 {
     partial class ScrollingGraph
     {

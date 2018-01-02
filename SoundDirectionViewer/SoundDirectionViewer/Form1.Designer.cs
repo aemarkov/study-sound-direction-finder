@@ -33,9 +33,9 @@
             this.cboxComs = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefreshComs = new System.Windows.Forms.ToolStripButton();
             this.btnOpenCom = new System.Windows.Forms.ToolStripButton();
-            this.sgraphSpectrum = new SoundDirectionViiewer.Components.ScrollingGraph();
-            this.sgraphAdc = new SoundDirectionViiewer.Components.ScrollingGraph();
-            this.sgraphShift = new SoundDirectionViiewer.Components.ScrollingGraph();
+            this.sgraphSpectrum = new Common.Components.ScrollingGraph();
+            this.sgraphAdc = new Common.Components.ScrollingGraph();
+            this.sgraphShift = new Common.Components.ScrollingGraph();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -165,9 +165,9 @@
         private System.Windows.Forms.ToolStripButton btnRefreshComs;
         private System.Windows.Forms.ToolStripButton btnOpenCom;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private Components.ScrollingGraph sgraphShift;
-        private Components.ScrollingGraph sgraphAdc;
-        private Components.ScrollingGraph sgraphSpectrum;
+        private Common.Components.ScrollingGraph sgraphShift;
+        private Common.Components.ScrollingGraph sgraphAdc;
+        private Common.Components.ScrollingGraph sgraphSpectrum;
     }
 }
 
