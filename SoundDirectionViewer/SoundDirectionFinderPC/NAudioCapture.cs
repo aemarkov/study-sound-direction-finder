@@ -97,7 +97,7 @@ namespace SoundDirectionFinderPC
             int align = channel.Source.WaveFormat.BlockAlign;
             while (i < buffer.Length)
             {
-                float v = CovnertBuffer(buffer, i, align);
+                float v = CovnertBuffer(buffer, i, channel.Source.WaveFormat.Encoding);
                 if (channel.AddValue(v))
                     return; //Игнорируем остаток
 
@@ -107,16 +107,14 @@ namespace SoundDirectionFinderPC
 
 
         // Преобрузет несколько байт в float, в зависимости от типа кодирования
-        private float CovnertBuffer(byte[] buffer, int startIndex, int align)
+        private float CovnertBuffer(byte[] buffer, int startIndex, WaveFormatEncoding encoding)
         {
-            switch (align)
+            switch (encoding)
             {
-                case 2:
+                case WaveFormatEncoding.Pcm:
                     return BitConverter.ToInt16(buffer, startIndex);
-                case 4:
+                case WaveFormatEncoding.IeeeFloat:
                     return BitConverter.ToSingle(buffer, startIndex);
-                case 8:
-                    return (float)BitConverter.ToDouble(buffer, startIndex);
                 default:
                     throw new NotSupportedException();
             }
@@ -191,12 +189,10 @@ namespace SoundDirectionFinderPC
                     Source.DataAvailable -= _dataReceivedHandler;
                     Source.Dispose();
                 }
-
-                newDevice.AudioEndpointVolume.MasterVolumeLevelScalar = 2;
-                
                 
                 _device = newDevice;
                 Source = new WasapiCapture(_device);
+                //Source = new WaveIn();
                 Source.DataAvailable += _dataReceivedHandler;
             }
         }

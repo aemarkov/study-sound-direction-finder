@@ -8,10 +8,9 @@ namespace Common.Components
 {
     public partial class ScrollingGraph : UserControl
     {
+
         public int WindowSize { get; set; }
-
         public double YMinValue { get; set; }
-
         public double YMaxValue { get; set; }
         public double XMinValue { get; set; }
         public double XMaxValue { get; set; }
@@ -49,7 +48,8 @@ namespace Common.Components
             }
         }
 
-        private List<RollingPointPairList> _channels;
+        private List<RollingPointPairList> _rollingChannels;
+        private List<PointPairList> _channels;
         private int x;
         
 
@@ -62,13 +62,24 @@ namespace Common.Components
 
             InitializeComponent();
 
-            _channels = new List<RollingPointPairList>();
+            _rollingChannels = new List<RollingPointPairList>();
+            _channels = new List<PointPairList>();
         }
 
         public void AddChannel(string name, Color color)
         {
-            var list = new RollingPointPairList(WindowSize);
-            _channels.Add(list);
+            IPointList list;
+
+            if (IsRolling)
+            {
+                list = new RollingPointPairList(WindowSize);
+                _rollingChannels.Add((RollingPointPairList)list);
+            }
+            else
+            {
+                list = new PointPairList();
+                _channels.Add((PointPairList)list);
+            }
 
             var pane = graph.GraphPane;
             pane.AddCurve(name, list, color, SymbolType.None);
@@ -79,13 +90,23 @@ namespace Common.Components
 
         public void AddData(double x, params double[] y)
         {
-            double xVal = IsRolling ? this.x : x;
+            var channelsCount = IsRolling ? _rollingChannels.Count : _channels.Count;
 
-            if(y.Length != _channels.Count)
+            if(y.Length != channelsCount)
                 throw new ArgumentException("Неверное количество каналов");
 
-            for (int i = 0; i < y.Length; i++)            
-               _channels[i].Add(xVal, y[i]);
+            double xVal = IsRolling ? this.x : x;
+
+            if (IsRolling)
+            {
+                for (int i = 0; i < y.Length; i++)
+                    _rollingChannels[i].Add(this.x, y[i]);
+            }
+            else
+            {
+                for (int i = 0; i < y.Length; i++)
+                    _channels[i].Add(x, y[i]);
+            }
         }
 
         public void UpdateGraph()
@@ -118,10 +139,19 @@ namespace Common.Components
         public void Clear()
         {
             if (IsRolling)
-                return;
+            {
+                foreach (var channel in _rollingChannels)
+                    channel.Clear();
 
-            foreach (var channel in _channels)
-                channel.Clear();
+                x = 0;
+            }
+            else
+            {
+                foreach (var channel in _channels)
+                    channel.Clear();
+            }
+
+
         }
     }
 }

@@ -36,6 +36,8 @@
             this.btnUpdateDevices = new System.Windows.Forms.ToolStripButton();
             this.btnRecord = new System.Windows.Forms.ToolStripButton();
             this.sgraphWave = new Common.Components.ScrollingGraph();
+            this.sgraphSpectrum = new Common.Components.ScrollingGraph();
+            this.sGraphShift = new Common.Components.ScrollingGraph();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             this.btnRecord});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(909, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1202, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -103,22 +105,60 @@
             this.sgraphWave.IsYAutoScale = true;
             this.sgraphWave.Location = new System.Drawing.Point(12, 28);
             this.sgraphWave.Name = "sgraphWave";
-            this.sgraphWave.Size = new System.Drawing.Size(636, 438);
+            this.sgraphWave.Size = new System.Drawing.Size(1178, 312);
             this.sgraphWave.TabIndex = 1;
-            this.sgraphWave.Title = "Title";
-            this.sgraphWave.WindowSize = 2048;
+            this.sgraphWave.Title = "";
+            this.sgraphWave.WindowSize = 20;
             this.sgraphWave.XMaxValue = 2048D;
             this.sgraphWave.XMinValue = 0D;
-            this.sgraphWave.XTitle = "X Axis";
+            this.sgraphWave.XTitle = "Отсчеты";
             this.sgraphWave.YMaxValue = 100D;
             this.sgraphWave.YMinValue = 0D;
-            this.sgraphWave.YTitle = "Y Axis";
+            this.sgraphWave.YTitle = "Амплитуда";
+            // 
+            // sgraphSpectrum
+            // 
+            this.sgraphSpectrum.IsRolling = false;
+            this.sgraphSpectrum.IsXAutoScale = true;
+            this.sgraphSpectrum.IsYAutoScale = true;
+            this.sgraphSpectrum.Location = new System.Drawing.Point(12, 346);
+            this.sgraphSpectrum.Name = "sgraphSpectrum";
+            this.sgraphSpectrum.Size = new System.Drawing.Size(1178, 312);
+            this.sgraphSpectrum.TabIndex = 2;
+            this.sgraphSpectrum.Title = "";
+            this.sgraphSpectrum.WindowSize = 2048;
+            this.sgraphSpectrum.XMaxValue = 2048D;
+            this.sgraphSpectrum.XMinValue = 0D;
+            this.sgraphSpectrum.XTitle = "Частота, Гц";
+            this.sgraphSpectrum.YMaxValue = 100D;
+            this.sgraphSpectrum.YMinValue = 0D;
+            this.sgraphSpectrum.YTitle = "Амплитуда";
+            // 
+            // sGraphShift
+            // 
+            this.sGraphShift.IsRolling = false;
+            this.sGraphShift.IsXAutoScale = true;
+            this.sGraphShift.IsYAutoScale = true;
+            this.sGraphShift.Location = new System.Drawing.Point(12, 664);
+            this.sGraphShift.Name = "sGraphShift";
+            this.sGraphShift.Size = new System.Drawing.Size(1178, 312);
+            this.sGraphShift.TabIndex = 3;
+            this.sGraphShift.Title = "";
+            this.sGraphShift.WindowSize = 2048;
+            this.sGraphShift.XMaxValue = 2048D;
+            this.sGraphShift.XMinValue = 0D;
+            this.sGraphShift.XTitle = "Время";
+            this.sGraphShift.YMaxValue = 100D;
+            this.sGraphShift.YMinValue = 0D;
+            this.sGraphShift.YTitle = "Сдвиг";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(909, 478);
+            this.ClientSize = new System.Drawing.Size(1202, 987);
+            this.Controls.Add(this.sGraphShift);
+            this.Controls.Add(this.sgraphSpectrum);
             this.Controls.Add(this.sgraphWave);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
@@ -140,6 +180,8 @@
         private System.Windows.Forms.ToolStripButton btnUpdateDevices;
         private System.Windows.Forms.ToolStripButton btnRecord;
         private Common.Components.ScrollingGraph sgraphWave;
+        private Common.Components.ScrollingGraph sgraphSpectrum;
+        private Common.Components.ScrollingGraph sGraphShift;
     }
 }
 
