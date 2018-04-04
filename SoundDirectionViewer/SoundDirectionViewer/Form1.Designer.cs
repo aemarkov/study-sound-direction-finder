@@ -33,9 +33,7 @@
             this.cboxComs = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefreshComs = new System.Windows.Forms.ToolStripButton();
             this.btnOpenCom = new System.Windows.Forms.ToolStripButton();
-            this.sgraphSpectrum = new Common.Components.ScrollingGraph();
             this.sgraphAdc = new Common.Components.ScrollingGraph();
-            this.sgraphShift = new Common.Components.ScrollingGraph();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +47,7 @@
             this.btnOpenCom});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1487, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(528, 28);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -86,24 +84,6 @@
             this.btnOpenCom.Text = "Подключиться";
             this.btnOpenCom.Click += new System.EventHandler(this.btnOpenCom_Click);
             // 
-            // sgraphSpectrum
-            // 
-            this.sgraphSpectrum.IsRolling = false;
-            this.sgraphSpectrum.IsXAutoScale = true;
-            this.sgraphSpectrum.IsYAutoScale = false;
-            this.sgraphSpectrum.Location = new System.Drawing.Point(518, 31);
-            this.sgraphSpectrum.Name = "sgraphSpectrum";
-            this.sgraphSpectrum.Size = new System.Drawing.Size(500, 400);
-            this.sgraphSpectrum.TabIndex = 7;
-            this.sgraphSpectrum.Title = "";
-            this.sgraphSpectrum.WindowSize = 1000;
-            this.sgraphSpectrum.XMaxValue = 0D;
-            this.sgraphSpectrum.XMinValue = 0D;
-            this.sgraphSpectrum.XTitle = "Частота";
-            this.sgraphSpectrum.YMaxValue = 5D;
-            this.sgraphSpectrum.YMinValue = -5D;
-            this.sgraphSpectrum.YTitle = "Амплитуда";
-            // 
             // sgraphAdc
             // 
             this.sgraphAdc.IsRolling = false;
@@ -114,7 +94,7 @@
             this.sgraphAdc.Size = new System.Drawing.Size(500, 400);
             this.sgraphAdc.TabIndex = 6;
             this.sgraphAdc.Title = "";
-            this.sgraphAdc.WindowSize = 256;
+            this.sgraphAdc.WindowSize = 512;
             this.sgraphAdc.XMaxValue = 0D;
             this.sgraphAdc.XMinValue = 0D;
             this.sgraphAdc.XTitle = "Отсчеты";
@@ -122,32 +102,12 @@
             this.sgraphAdc.YMinValue = 0D;
             this.sgraphAdc.YTitle = "Амплитуда";
             // 
-            // sgraphShift
-            // 
-            this.sgraphShift.IsRolling = true;
-            this.sgraphShift.IsXAutoScale = false;
-            this.sgraphShift.IsYAutoScale = true;
-            this.sgraphShift.Location = new System.Drawing.Point(1024, 31);
-            this.sgraphShift.Name = "sgraphShift";
-            this.sgraphShift.Size = new System.Drawing.Size(500, 400);
-            this.sgraphShift.TabIndex = 5;
-            this.sgraphShift.Title = "";
-            this.sgraphShift.WindowSize = 1000;
-            this.sgraphShift.XMaxValue = 0D;
-            this.sgraphShift.XMinValue = 0D;
-            this.sgraphShift.XTitle = "Время";
-            this.sgraphShift.YMaxValue = 10D;
-            this.sgraphShift.YMinValue = -10D;
-            this.sgraphShift.YTitle = "Отсчеты";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1487, 448);
-            this.Controls.Add(this.sgraphSpectrum);
+            this.ClientSize = new System.Drawing.Size(528, 448);
             this.Controls.Add(this.sgraphAdc);
-            this.Controls.Add(this.sgraphShift);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -165,9 +125,7 @@
         private System.Windows.Forms.ToolStripButton btnRefreshComs;
         private System.Windows.Forms.ToolStripButton btnOpenCom;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private Common.Components.ScrollingGraph sgraphShift;
         private Common.Components.ScrollingGraph sgraphAdc;
-        private Common.Components.ScrollingGraph sgraphSpectrum;
     }
 }
 

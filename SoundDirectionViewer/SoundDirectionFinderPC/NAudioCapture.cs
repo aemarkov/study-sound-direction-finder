@@ -73,6 +73,9 @@ namespace SoundDirectionFinderPC
         private void _right_DataAvailable(object sender, WaveInEventArgs e)
         {
 
+            Console.WriteLine(e.Buffer.Length);
+
+
             lock (_lock)
             {
                 SaveToChannel(_right, e.Buffer);

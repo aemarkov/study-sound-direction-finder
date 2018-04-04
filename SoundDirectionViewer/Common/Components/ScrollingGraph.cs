@@ -95,8 +95,6 @@ namespace Common.Components
             if(y.Length != channelsCount)
                 throw new ArgumentException("Неверное количество каналов");
 
-            double xVal = IsRolling ? this.x : x;
-
             if (IsRolling)
             {
                 for (int i = 0; i < y.Length; i++)

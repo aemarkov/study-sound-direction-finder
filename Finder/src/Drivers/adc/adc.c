@@ -1,15 +1,8 @@
 #include "adc.h"
 
 AdcHandler _handler;
-uint16_t _adcBuffer[ADC_BUFFER_SIZE * 2];
+uint16_t _adcBuffer[ADC_BUFFER_HALF_SIZE * 2];
 void TimerInit();
-
-/*
-Частота сэмплирования: 4кГц
-Размер буффера: 1024
-Длительность: 256 мС
-*/
-
 
 void AdcInit(AdcHandler handler)
 {
@@ -33,7 +26,7 @@ void AdcInit(AdcHandler handler)
     dmaInit.DMA_MemoryBaseAddr = (uint32_t)&_adcBuffer;                     // Адрес получателя - буфер
     dmaInit.DMA_DIR = DMA_DIR_PeripheralSRC;                                // Из переферии в память
     dmaInit.DMA_M2M = DMA_M2M_Disable;                                      
-    dmaInit.DMA_BufferSize = ADC_BUFFER_SIZE;                               // Размер буффера в памяти
+    dmaInit.DMA_BufferSize = ADC_BUFFER_HALF_SIZE;                               // Размер буффера в памяти
     dmaInit.DMA_PeripheralInc = DMA_PeripheralInc_Disable;                  // Не инкрементировать адрес источника
     dmaInit.DMA_MemoryInc = DMA_MemoryInc_Enable;                           // Не инкрементировать адрес получателя
     dmaInit.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;           // Размер данных - 4б
@@ -110,12 +103,11 @@ void AdcInit(AdcHandler handler)
 void TimerInit()
 {
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
-    
-    // Частота - 4кГц
+
     TIM_TimeBaseInitTypeDef timInit;    
     TIM_TimeBaseStructInit(&timInit);
-    timInit.TIM_Prescaler = 18;
-    timInit.TIM_Period = 100;
+    timInit.TIM_Prescaler = ADC_TIMER_PRESCALER;
+    timInit.TIM_Period = ADC_TIMER_PERIOD;
     TIM_TimeBaseInit(TIM6, &timInit);
     
     //TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
@@ -134,14 +126,23 @@ void DMA1_Channel1_IRQHandler(void)
     {
         //Half-transfer
         DMA_ClearITPendingBit(DMA1_IT_HT1);
-        _handler(_adcBuffer, ADC_BUFFER_SIZE);
+        _handler(_adcBuffer, ADC_BUFFER_HALF_SIZE);
     }
     if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
     {
         //transfer
         DMA_ClearITPendingBit(DMA1_IT_TC1);
-        _handler(_adcBuffer+ADC_BUFFER_SIZE, ADC_BUFFER_SIZE);
+        _handler(_adcBuffer+ADC_BUFFER_HALF_SIZE, ADC_BUFFER_HALF_SIZE);
     }
     
     DMA_ClearITPendingBit(DMA1_IT_GL1);
+}
+
+void TIM6_DAC1_IRQHandler()
+{
+    if(TIM_GetITStatus(TIM6, TIM_IT_Update)!=RESET)
+	{
+        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+        GPIOE->ODR ^= GPIO_Pin_9;
+    }
 }
