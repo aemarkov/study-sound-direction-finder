@@ -679,11 +679,6 @@
               <FilePath>.\src\Drivers\gpio\discovery_leds.h</FilePath>
             </File>
             <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\Drivers\uart\uart.c</FilePath>
-            </File>
-            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
@@ -1455,11 +1450,6 @@
               <FilePath>.\src\Drivers\gpio\discovery_leds.h</FilePath>
             </File>
             <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\Drivers\uart\uart.c</FilePath>
-            </File>
-            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\Drivers\delay\delay.c</FilePath>
@@ -1562,7 +1552,7 @@
       <TargetName>STM32F303xC</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6060000::V6.6::.\ARMCLANG</pCCUsed>
+      <pCCUsed>5060300::V5.06 update 3 (build 300)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F303VC</Device>
@@ -2229,11 +2219,6 @@
               <FileName>discovery_leds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Drivers\gpio\discovery_leds.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\Drivers\uart\uart.c</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>
@@ -3005,11 +2990,6 @@
               <FileName>discovery_leds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Drivers\gpio\discovery_leds.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\Drivers\uart\uart.c</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>

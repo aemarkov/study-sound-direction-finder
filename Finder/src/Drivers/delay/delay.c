@@ -21,17 +21,23 @@ void Delay_us(uint32_t us)
     while ((DWT->CYCCNT - t0) < us_count_tic) ;
 }
 
-uint32_t DelayUntil_start(void)
+void Delay_ms(uint32_t us)
 {
-    return DWT->CYCCNT;
-}
-
-void DelayUntil_delay(uint32_t us, uint32_t t0)
-{
+    uint32_t t0 =  DWT->CYCCNT;
     uint32_t us_count_tic =  us * (SystemCoreClock/1000000);
     while ((DWT->CYCCNT - t0) < us_count_tic) ;
 }
 
+void Timer_start(void)
+{
+    DWT_CYCCNT = 0;
+}
+
+float Timer_get(void)
+{
+    return DWT_CYCCNT / (float)SystemCoreClock;
+}
+    
 
 /*
 Работает даже при переполнении

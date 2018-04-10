@@ -26,27 +26,14 @@ void DelayInit(void);
 
 void Delay_us(uint32_t us);
 
-
-
-
 /**
-    \bref Задержка, пока с некого события не истечет заданное время
-    
-    Задержка не константная, а позволяет обернуть некий участок кода
-    функциями DelayUntil_start - DelayUntil_delay и он будет выполняться
-    заданное время (какое-то время выполняется сам код, оставшееся - 
-    DelayUntil_delay
-    
-    \param[in] us Задержка в микросекундах
-    \param[in] t0 Время начала периода, получаемое при помощи DelayUntil_start
-*/    
-void DelayUntil_delay(uint32_t us, uint32_t t0);
-
-/**
-    \brief Получает текущее значение счетчика DWT, чтобы потом использовать в
-           DelayUntil_delay
-    
-    \return Текущее значенеи счетчика
+    \brief Задержка
+    \param[in] us Количество миллисекунд задержки
 */
-uint32_t DelayUntil_start(void);
+
+void Delay_ms(uint32_t us);
+
+void Timer_start(void);
+float Timer_get(void);
+
 #endif

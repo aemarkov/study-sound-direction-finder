@@ -21,20 +21,16 @@
 
 #define HEADER_SIZE 3
 uint8_t header[HEADER_SIZE] = {0x32, 0xFA, 0x12};
+uint8_t wtf[3] = {1, 2, 3};
 
 int cnt = 0;
 int sendEvery  = 3;
 
 void HandleAdc(uint16_t* buffer, int length)
-{
-    cnt++;
-    if(cnt % sendEvery == 0)
-    {    
-        GPIOE->ODR^=GPIO_Pin_8;
-        USB_Send_Data(header, HEADER_SIZE);       
+{    
+        GPIOE->ODR^=GPIO_Pin_9;
+        USB_Send_Data(header, HEADER_SIZE);
         USB_Send_Data((uint8_t*)buffer, length*sizeof(uint16_t));
-        //USB_SetBuffer((uint8_t*)buffer, length * sizeof(uint16_t));
-    }
 }
 
 int main(void)
@@ -45,6 +41,7 @@ int main(void)
     USB_Init();
     
     AdcInit(HandleAdc);
+    DelayInit();
     
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);	    
     GpioInitOutput(GPIOE, GPIO_Pin_9 | GPIO_Pin_8, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3); 
@@ -54,8 +51,9 @@ int main(void)
 
     while(1)
     {
-        /*for(int i = 0; i<100000; i++);
-        GPIOE->ODR^=GPIO_Pin_8;*/
+        //USB_Send_Data(header, HEADER_SIZE); 
+        //for(int i = 0; i<1000000; i++);
+        //GPIOE->ODR^=GPIO_Pin_8;
     }
 }
 

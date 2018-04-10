@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.cboxComs = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefreshComs = new System.Windows.Forms.ToolStripButton();
             this.btnOpenCom = new System.Windows.Forms.ToolStripButton();
-            this.sgraphAdc = new Common.Components.ScrollingGraph();
+            this.adcGraph = new ZedGraph.ZedGraphControl();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,30 +85,27 @@
             this.btnOpenCom.Text = "Подключиться";
             this.btnOpenCom.Click += new System.EventHandler(this.btnOpenCom_Click);
             // 
-            // sgraphAdc
+            // adcGraph
             // 
-            this.sgraphAdc.IsRolling = false;
-            this.sgraphAdc.IsXAutoScale = false;
-            this.sgraphAdc.IsYAutoScale = false;
-            this.sgraphAdc.Location = new System.Drawing.Point(12, 31);
-            this.sgraphAdc.Name = "sgraphAdc";
-            this.sgraphAdc.Size = new System.Drawing.Size(500, 400);
-            this.sgraphAdc.TabIndex = 6;
-            this.sgraphAdc.Title = "";
-            this.sgraphAdc.WindowSize = 512;
-            this.sgraphAdc.XMaxValue = 0D;
-            this.sgraphAdc.XMinValue = 0D;
-            this.sgraphAdc.XTitle = "Отсчеты";
-            this.sgraphAdc.YMaxValue = 4D;
-            this.sgraphAdc.YMinValue = 0D;
-            this.sgraphAdc.YTitle = "Амплитуда";
+            this.adcGraph.Location = new System.Drawing.Point(12, 31);
+            this.adcGraph.Name = "adcGraph";
+            this.adcGraph.ScrollGrace = 0D;
+            this.adcGraph.ScrollMaxX = 0D;
+            this.adcGraph.ScrollMaxY = 0D;
+            this.adcGraph.ScrollMaxY2 = 0D;
+            this.adcGraph.ScrollMinX = 0D;
+            this.adcGraph.ScrollMinY = 0D;
+            this.adcGraph.ScrollMinY2 = 0D;
+            this.adcGraph.Size = new System.Drawing.Size(504, 405);
+            this.adcGraph.TabIndex = 1;
+            this.adcGraph.UseExtendedPrintDialog = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(528, 448);
-            this.Controls.Add(this.sgraphAdc);
+            this.Controls.Add(this.adcGraph);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -125,7 +123,7 @@
         private System.Windows.Forms.ToolStripButton btnRefreshComs;
         private System.Windows.Forms.ToolStripButton btnOpenCom;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private Common.Components.ScrollingGraph sgraphAdc;
+        private ZedGraph.ZedGraphControl adcGraph;
     }
 }
 

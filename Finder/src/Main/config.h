@@ -4,12 +4,20 @@
 
 /*
 SYSCLOCK = 72.000.000
-F_SAMPL = 4 kHz
-BUFFER: 128 мс
+
+window    10 мс
+cnt       1000 отсчетов
+
+f = cnt * 1000 / window
+f = 1000 * 100 / 10 = 10.000
 */
 
-#define ADC_BUFFER_HALF_SIZE 128
-#define ADC_TIMER_PRESCALER 1000
-#define ADC_TIMER_PERIOD 18
+/*
+Количество измерений ПО ОДНОМУ КАНАЛУ
+за одну передачу
+*/
+#define ADC_WINDOW_SIZE 500
+#define ADC_TIMER_PRESCALER 72
+#define ADC_TIMER_PERIOD 20
 
 #endif

@@ -1,7 +1,18 @@
 #include "adc.h"
 
+/*
+ADC_WINDOW_SIZE - количество измерений ПО ОДНОМУ КАНАЛУ
+за одну передачу
+
+1) Буфер обрабатывается по половине
+2) При измерении в буфер заносятся сразу два значения,
+из обоих каналов
+*/
+
+#define HALF_BUFFER_SIZE ADC_WINDOW_SIZE * 2   // Число элементов в половине буфера
+
 AdcHandler _handler;
-uint16_t _adcBuffer[ADC_BUFFER_HALF_SIZE * 2];
+uint16_t _adcBuffer[2*HALF_BUFFER_SIZE];
 void TimerInit();
 
 void AdcInit(AdcHandler handler)
@@ -26,7 +37,12 @@ void AdcInit(AdcHandler handler)
     dmaInit.DMA_MemoryBaseAddr = (uint32_t)&_adcBuffer;                     // Адрес получателя - буфер
     dmaInit.DMA_DIR = DMA_DIR_PeripheralSRC;                                // Из переферии в память
     dmaInit.DMA_M2M = DMA_M2M_Disable;                                      
-    dmaInit.DMA_BufferSize = ADC_BUFFER_HALF_SIZE;                               // Размер буффера в памяти
+    /* 
+    НЕТ, ОШИБКИ НЕТ
+    Размер буфера в элементах (DMA_***DataSize),
+    а элемент - 4б, т.е. 2 канала сразу
+    */
+    dmaInit.DMA_BufferSize = HALF_BUFFER_SIZE;                              // Размер буффера в памяти
     dmaInit.DMA_PeripheralInc = DMA_PeripheralInc_Disable;                  // Не инкрементировать адрес источника
     dmaInit.DMA_MemoryInc = DMA_MemoryInc_Enable;                           // Не инкрементировать адрес получателя
     dmaInit.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;           // Размер данных - 4б
@@ -86,14 +102,14 @@ void AdcInit(AdcHandler handler)
     ADC_DMACmd(ADC1, ENABLE);
     ADC_DMAConfig(ADC1, ADC_DMAMode_Circular);
  
-    TimerInit();
- 
     // Наконец-то включаем АЦП
     ADC_Cmd(ADC1, ENABLE); 
     ADC_Cmd(ADC2, ENABLE);    
  
     while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_RDY));   
     ADC_StartConversion(ADC1);
+    
+    TimerInit();
 }
 
 
@@ -103,6 +119,7 @@ void AdcInit(AdcHandler handler)
 void TimerInit()
 {
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
+    GpioInitOutput(GPIOC, GPIO_Pin_3, GPIO_OType_PP, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3);
 
     TIM_TimeBaseInitTypeDef timInit;    
     TIM_TimeBaseStructInit(&timInit);
@@ -110,8 +127,8 @@ void TimerInit()
     timInit.TIM_Period = ADC_TIMER_PERIOD;
     TIM_TimeBaseInit(TIM6, &timInit);
     
-    //TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
-    //NVIC_EnableIRQ(TIM6_DAC1_IRQn);
+    TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
+    NVIC_EnableIRQ(TIM6_DAC1_IRQn);
     
     // Выходной триггер
     TIM_SelectOutputTrigger(TIM6, TIM_TRGOSource_Update);
@@ -126,13 +143,13 @@ void DMA1_Channel1_IRQHandler(void)
     {
         //Half-transfer
         DMA_ClearITPendingBit(DMA1_IT_HT1);
-        _handler(_adcBuffer, ADC_BUFFER_HALF_SIZE);
+        _handler(_adcBuffer, HALF_BUFFER_SIZE);
     }
     if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
     {
         //transfer
         DMA_ClearITPendingBit(DMA1_IT_TC1);
-        _handler(_adcBuffer+ADC_BUFFER_HALF_SIZE, ADC_BUFFER_HALF_SIZE);
+        _handler(_adcBuffer+HALF_BUFFER_SIZE, HALF_BUFFER_SIZE);
     }
     
     DMA_ClearITPendingBit(DMA1_IT_GL1);
@@ -143,6 +160,5 @@ void TIM6_DAC1_IRQHandler()
     if(TIM_GetITStatus(TIM6, TIM_IT_Update)!=RESET)
 	{
         TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
-        GPIOE->ODR ^= GPIO_Pin_9;
     }
 }

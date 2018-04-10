@@ -60,30 +60,36 @@ namespace SoundDirectionViiewer
                         //Читаем заголовок
                         _state = ReceiveState.RECEIVING_HEADER;
                         _currentHeaderByte++;
+                        //Console.WriteLine("Read header");
                     }
                     else
                     {
                         //Это не заголовок
                         _currentHeaderByte = 0;
                         _state = ReceiveState.RECEIVING_HEADER;
+                        //Console.WriteLine("Not header");
                     }
 
                     if (_currentHeaderByte == _packageHeder.Length)
                     {
                         //Заголовок полностью считан
                         _state = ReceiveState.RECEVING_BODY;
+                        //Console.WriteLine("Header received");
                     }
                 }
                 else if (_state == ReceiveState.RECEVING_BODY)
                 {
                     //Читаем пакет
                     _receivedQueue.Add(buffer[i]);
+                    //Console.WriteLine("Receive package");
 
                     if (_receivedQueue.Count == _packageLength)
                     {
                         //Пакет полностью считан
                         _state = ReceiveState.RECEIVING_HEADER;
                         _currentHeaderByte = 0;
+
+                        //Console.WriteLine("Package received");
 
                         if (PackageReceived != null)
                             PackageReceived(this, _receivedQueue.ToArray());
