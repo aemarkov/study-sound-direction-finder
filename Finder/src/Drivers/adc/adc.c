@@ -114,8 +114,6 @@ void AdcInit(AdcHandler handler)
 
 
 // Настройка таймера для триггерения АЦП
-// Получить ровно 4кГц частоту сэмплирования без таймера не 
-// получится
 void TimerInit()
 {
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
@@ -155,10 +153,3 @@ void DMA1_Channel1_IRQHandler(void)
     DMA_ClearITPendingBit(DMA1_IT_GL1);
 }
 
-void TIM6_DAC1_IRQHandler()
-{
-    if(TIM_GetITStatus(TIM6, TIM_IT_Update)!=RESET)
-	{
-        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
-    }
-}
